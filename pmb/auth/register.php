@@ -5,14 +5,13 @@ include '../config/koneksi.php';
 if(isset($_POST['register'])){
 
     $nama = htmlspecialchars($_POST['nama']);
-
     $email = htmlspecialchars($_POST['email']);
-
     $password = md5($_POST['password']);
 
-    $cek = mysqli_query($conn,"
-    SELECT * FROM users
-    WHERE email='$email'
+    /* ================= FIX: $conn -> $koneksi ================= */
+    $cek = mysqli_query($koneksi,"
+        SELECT * FROM users
+        WHERE email='$email'
     ");
 
     if(mysqli_num_rows($cek) > 0){
@@ -21,28 +20,25 @@ if(isset($_POST['register'])){
 
     }else{
 
-        mysqli_query($conn,"
-        INSERT INTO users
-        (
-            nama,
-            email,
-            password,
-            role
-        )
-
-        VALUES
-        (
-            '$nama',
-            '$email',
-            '$password',
-            'mahasiswa'
-        )
+        mysqli_query($koneksi,"
+            INSERT INTO users
+            (
+                nama,
+                email,
+                password,
+                role
+            )
+            VALUES
+            (
+                '$nama',
+                '$email',
+                '$password',
+                'mahasiswa'
+            )
         ");
 
         $success = "Registrasi berhasil!";
-
     }
-
 }
 
 ?>
